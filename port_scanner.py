@@ -2,6 +2,7 @@ import subprocess
 import ipaddress
 import sys
 import platform
+import socket
 
 def ping_host(ip):
     try:
@@ -89,4 +90,4 @@ def main():
 
 if __name__ == "__main__":
         main()
-        # If this script is being run directly (not imported as a module), run the main function.
+        # If this script is being run directly (not imported as a module), run the main function.   
