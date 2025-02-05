@@ -1,5 +1,3 @@
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=18052514)
-
 # IP Address Scanner Script
 This script scans a network range specified in CIDR notation (192.168.1.0/24) and reports the status of each IP address in the range. The script pings each host and returns the host and notes if it's "Up", "Down", or if an error occured during the scan. It also includes response times for each successful ping. This script accepts one command-line argument. The network range to scan in CIDR format `192.168.1.0/24`. 
 
