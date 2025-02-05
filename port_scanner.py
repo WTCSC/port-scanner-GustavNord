@@ -90,4 +90,23 @@ def main():
 
 if __name__ == "__main__":
         main()
-        # If this script is being run directly (not imported as a module), run the main function.   
+        # If this script is being run directly (not imported as a module), run the main function.
+
+# addr = ("", 8080)
+# if socket.hs_dualstack_ipv6():
+#   s = socket.create_server(addr, family=socket.AF_INET6, dualstack_ipv6=True)
+# else: 
+#   s = socket.create_server(addr)
+
+
+# import argparse
+# from scapy.all import IP, TCP, sr
+# from colorama import Fore, init
+
+# init(autoreset=True)
+
+
+# class PortScanner:
+#   def __init__(self, target_ip, ports):
+#   self.target_ip = target_ip
+#   self.ports = port
