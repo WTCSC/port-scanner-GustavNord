@@ -69,6 +69,18 @@ def scan_network(cidr):
     return up_count, down_count, error_count
     # Return counts of "Up", "Down", and "Error" hosts.
 
+def scan_ports(ip, ports):
+    open_ports = 0
+    for port in ports
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.settimeout(0.5)
+                s.connect((ip, port))
+                open_ports.append(port)
+        except:
+            pass
+    return open_ports
+
 def main():
     # Check if exactly one argument (the CIDR) is passed when running the script.
     if len(sys.argv) != 2:
@@ -91,22 +103,3 @@ def main():
 if __name__ == "__main__":
         main()
         # If this script is being run directly (not imported as a module), run the main function.
-
-# addr = ("", 8080)
-# if socket.hs_dualstack_ipv6():
-#   s = socket.create_server(addr, family=socket.AF_INET6, dualstack_ipv6=True)
-# else: 
-#   s = socket.create_server(addr)
-
-
-# import argparse
-# from scapy.all import IP, TCP, sr
-# from colorama import Fore, init
-
-# init(autoreset=True)
-
-
-# class PortScanner:
-#   def __init__(self, target_ip, ports):
-#   self.target_ip = target_ip
-#   self.ports = port
