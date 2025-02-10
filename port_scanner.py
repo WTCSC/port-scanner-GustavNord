@@ -70,8 +70,8 @@ def scan_network(cidr):
     # Return counts of "Up", "Down", and "Error" hosts.
 
 def scan_ports(ip, ports):
-    open_ports = 0
-    for port in ports
+    open_ports = []
+    for port in ports:
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 s.settimeout(0.5)
