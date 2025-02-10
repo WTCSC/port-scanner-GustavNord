@@ -75,13 +75,13 @@ def scan_ports(ip, ports):
         test_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         test_socket.settimeout(0.5)
         output = test_socket.connect((ip, port))
-
+        
         try:
             test_socket.connect((ip, port))
             open_ports.append(port)
-        except:
-
-
+            test_socket.close()
+        except socket.timeout and socket.error:
+            test_socket.close() 
             pass
 
     return open_ports
