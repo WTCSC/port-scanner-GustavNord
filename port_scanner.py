@@ -4,6 +4,9 @@ import sys
 import platform
 import socket
 
+port_min = 0
+port_max = 65535
+
 def ping_host(ip):
     try:
         # Check the operating system and use the appropriate ping command.
@@ -80,7 +83,7 @@ def scan_ports(ip, ports):
             test_socket.connect((ip, port))
             open_ports.append(port)
             test_socket.close()
-        except socket.timeout and socket.error:
+        except (socket.timeout, socket.error):
             test_socket.close() 
             pass
 
