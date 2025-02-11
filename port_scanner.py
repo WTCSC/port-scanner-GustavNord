@@ -99,7 +99,6 @@ def scan_network(cidr, ports=None):
             else:
                 response_time = "No response"
 
-
             open_ports = scan_ports(str(ip), ports)
             # Scans the specified ports for open ports.
             if open_ports:
