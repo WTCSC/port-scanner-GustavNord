@@ -1,5 +1,5 @@
 # IP Address Scanner Script
-This script scans a network range specified in CIDR notation (192.168.1.0/24) and reports the status of each IP address in the range. The script pings each host and returns the host and notes if it's "Up", "Down", or if an error occured during the scan. It also includes response times for each successful ping. This script accepts one command-line argument. The network range to scan in CIDR format `192.168.1.0/24`. 
+This script scans a network range specified in CIDR notation (192.168.1.0/24) and reports the status of each IP address in the range. The script pings each host and returns the host's status and notes if it's "Up", "Down", or if an error occured during the scan. It also includes response times for each successful ping. This script accepts one command-line argument. The network range to scan in CIDR format `192.168.1.0/24`. 
 
 ## Introduction
 This script allows user to scan a network range given in CIDR notation. It checks the status of each IP address in the range by using `ping` and checks if the IP is reachable and provides detailed information about the status of each IP address
@@ -25,7 +25,7 @@ This script allows user to scan a network range given in CIDR notation. It check
 Run the script from the command line to scan a network range provided in CIDR notation.
 
 ```python
-python3 scan.py 192.168.1.0/24
+python3 port_scanner.py 192.168.1.0/24
 ```
 
 Output Example:
@@ -64,6 +64,23 @@ If there is a connection issue or timeout during the ping attempt, the script wi
 
 3. Python Not Found
 **Solution:** Make sure that Python is installed to your PATH and can be accessed from the command-line. 
+
+# Scan Specific Ports
+You can also scan specific ports on active hosts by using the `-p` option and the list of ports or a range of ports. 
+
+```python
+python3 port_scanner.py 192.168.1.0/24 -p 22, 80, 443
+```
+
+This will scan ports 22 (SSH), 80 (HTTP), and 443 (HTTPS) on each active host that responds to the ping.
+
+
+You can also specify a range of ports:
+```python
+python3 port_scanner.py 192.168.1.0/24 -p 1000-1020
+
+This will scan ports from 1000 to 1020 on each active host.
+
 
 ## Extras
 **Notes:**
