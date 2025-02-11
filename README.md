@@ -93,6 +93,7 @@ You can also specify a range of ports:
 python3 port_scanner.py 192.168.1.0/24 -p 1000-1020
 
 This will scan ports from 1000 to 1020 on each active host.
+```
 
 
 ## Extras
