@@ -38,6 +38,19 @@ Scanning network 192.168.1.0/24...
 192.168.1.4 - Up (3ms)
 192.168.1.5 - Error (Connection timeout)
 
+Scanning ports on active hosts
+
+192.168.1.1 (Up) Response Time: 2ms
+- Port 22 (Open)
+- Port 80 (Open)
+- Port 443 (Open)
+
+192.168.1.3 (Up) Response Time: 5ms
+ - Port 22 (Open)
+
+192.168.1.4 (Up) Response Time: 3ms
+ - Port 443 (Open)
+
 Scan complete.
 Found 3 active hosts, 1 down, and 1 error
 ```
