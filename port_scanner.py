@@ -3,10 +3,6 @@ import ipaddress
 import sys
 import platform
 import socket
-import argparse
-
-port_min = 0
-port_max = 65535
 
 def ping_host(ip):
     try:
@@ -34,9 +30,25 @@ def ping_host(ip):
         # Catch any unexpected errors and return an error message.
         return "Error", str(e)
 
-def scan_network(cidr):
+def scan_ports(ip, ports):
+    open_ports = []
+    for port in ports:
+        test_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        test_socket.settimeout(0.5)
+        
+        try:
+            if test_socket.connect_ex((ip, port)) == 0:
+                open_ports.append(port)
+        except (socket.timeout, socket.error):
+            pass
 
-    up_count = 0
+        test_socket.close()
+
+    return open_ports
+
+def scan_network(cidr, ports=None):
+
+    up_hosts = []
     down_count = 0
     error_count = 0
     # Count of hosts that responded successfully (Up), hosts that did not respond (Down), and count of hosts where there was an error during ping.
@@ -58,57 +70,71 @@ def scan_network(cidr):
 
         if status == "Up":
             # Check the ping result and update the corresponding counts.
-            up_count += 1
+            up_hosts.append((ip, message))
             print(f"{ip} - Up ({message}ms)")
             # Print the IP and its response time if it's "Up."
         elif status == "Down":
             down_count += 1
-            print(f"{ip} - Down ({message})")
+            print(f"{ip} - Down")
             # Print "Down" if no response.
         else:
             error_count += 1
             print(f"{ip} - Error ({message})")
             # Print any error message if something went wrong.
 
-    return up_count, down_count, error_count
-    # Return counts of "Up", "Down", and "Error" hosts.
+    if ports:
+        print("\nScanning ports on active hosts\n")
+        for ip, message in up_hosts:
+            if isinstance(message, float):
+                response_time = message
+            else:
+                response_time = "No response"
 
-def scan_ports(ip, ports):
-    open_ports = []
-    for port in ports:
-        test_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        test_socket.settimeout(0.5)
-        output = test_socket.connect((ip, port))
-        
-        try:
-            test_socket.connect((ip, port))
-            open_ports.append(port)
-            test_socket.close()
-        except (socket.timeout, socket.error):
-            test_socket.close() 
-            pass
 
-    return open_ports
+            open_ports = scan_ports(str(ip), ports)
+            if open_ports:
+                print(f"{ip} (Up) Response Time: {response_time}ms")
+                for port in open_ports:
+                    print(f" - Port {port} (Open)")
+
+    return len(up_hosts), down_count, error_count  
+
+def parse_ports(port_arg):
+    ports = set()
+    for part in port_arg.split(','):
+        if '-' in part:
+            start, end = map(int, part.split('-'))
+            ports.update(range(start, end + 1))
+        else:
+            ports.add(int(part))
+    return sorted(ports)
 
 def main():
     # Check if exactly one argument (the CIDR) is passed when running the script.
-    if len(sys.argv) != 2:
-        print("Usage: python scan.py <CIDR>")
+    if len(sys.argv) < 2:
+        print("Usage: python scan.py <CIDR> [-p <ports>]")
         sys.exit(1)
         # Provide usage instructions if argument is missing.
 
     cidr = sys.argv[1]
+    ports = None
+
+    if len(sys.argv) > 2 and sys.argv[2] == "-p":
+        if len(sys.argv) < 4:
+            print("Error: No ports specified for scanning.")
+            sys.exit(1)
+        ports = parse_ports(sys.argv[3])
+
     # Get the CIDR notation from the command-line arguments.
     try:
         # Call the scan_network function to scan the network and store the counts.
-        up_count, down_count, error_count = scan_network(cidr)
+        up_hosts, down_count, error_count = scan_network(cidr, ports)
+        up_count = len(up_hosts)
         print("Scan complete.")
         print(f"Found {up_count} active hosts, {down_count} down, and {error_count} errors")
         # Output the results of the scan.
-    except ValueError:
-        print("Error: Invalid CIDR notation.")
-        # Error handling for invalid CIDR input.
-
+    except Exception as e:
+        print(f"Unexpected error: {str(e)}")
 if __name__ == "__main__":
         main()
         # If this script is being run directly (not imported as a module), run the main function.
